@@ -3,4 +3,4 @@ LABEL authors="yigit"
 
 FROM openjdk:17
 COPY . .
-RUN ./gradlew clean build
+RUN ./gradlew build

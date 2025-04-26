@@ -17,7 +17,7 @@ public class AdminController {
 
     private final BookRepository bookRepository;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Book> createBook(@RequestBody BookRequest book) {
         Book savedBook = new Book();
         savedBook.setIsbn(book.getIsbn());
@@ -35,7 +35,7 @@ public class AdminController {
         return ResponseEntity.created(location).body(savedBook);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("update/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody BookRequest updatedBook) {
         Optional<Book> optionalBook = bookRepository.findById(id);
 
@@ -60,7 +60,7 @@ public class AdminController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         if (bookRepository.existsById(id)) {
             bookRepository.deleteById(id);

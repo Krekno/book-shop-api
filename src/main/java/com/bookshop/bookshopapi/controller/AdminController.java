@@ -53,10 +53,10 @@ public class AdminController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
-        if (bookRepository.existsById(id)) {
-            bookRepository.deleteById(id);
+    @DeleteMapping("delete/{isbn}")
+    public ResponseEntity<Void> deleteBook(@PathVariable Long isbn) {
+        if (bookRepository.existsById(isbn)) {
+            bookRepository.deleteById(isbn);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

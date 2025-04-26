@@ -1,5 +1,6 @@
 package com.bookshop.bookshopapi.controller;
 
+import com.bookshop.bookshopapi.DTO.BookRequest;
 import com.bookshop.bookshopapi.entity.Book;
 import com.bookshop.bookshopapi.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,23 @@ public class AdminController {
     }
 
     @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
-        Book savedBook = bookRepository.save(book);
+    public ResponseEntity<Book> createBook(@RequestBody BookRequest book) {
+        Book savedBook = new Book();
+        savedBook.setIsbn(book.getIsbn());
+        savedBook.setTitle(book.getTitle());
+        savedBook.setAuthor(book.getAuthor());
+        savedBook.setCategory(book.getCategory());
+        savedBook.setQuantity(book.getQuantity());
+        savedBook.setDescription(book.getDescription());
+        savedBook.setImage(book.getImage());
+        savedBook.setPublisher(book.getPublisher());
+        savedBook.setPrice(book.getPrice());
+        savedBook = bookRepository.save(savedBook);
         return ResponseEntity.ok(savedBook);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book updatedBook) {
+    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody BookRequest updatedBook) {
         Optional<Book> optionalBook = bookRepository.findById(id);
 
         if (optionalBook.isPresent()) {

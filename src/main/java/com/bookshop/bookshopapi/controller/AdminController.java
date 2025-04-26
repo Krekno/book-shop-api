@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/admin")
 @AllArgsConstructor
@@ -37,34 +35,29 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody BookRequest updatedBook) {
-        Optional<Book> optionalBook = bookRepository.findById(id);
-
-        if (optionalBook.isPresent()) {
-            Book existingBook = optionalBook.get();
-
-            existingBook.setIsbn(updatedBook.getIsbn());
-            existingBook.setTitle(updatedBook.getTitle());
-            existingBook.setAuthor(updatedBook.getAuthor());
-            existingBook.setCategory(updatedBook.getCategory());
-            existingBook.setQuantity(updatedBook.getQuantity());
-            existingBook.setDescription(updatedBook.getDescription());
-            existingBook.setImage(updatedBook.getImage());
-            existingBook.setPublisher(updatedBook.getPublisher());
-            existingBook.setPrice(updatedBook.getPrice());
-
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    @PutMapping("update/{isbn}")
+    public ResponseEntity<Book> updateBook(@PathVariable Long isbn, @RequestBody BookRequest updatedBook) {
+        return bookRepository.findByIsbn(isbn)
+                .map(book -> {
+                    book.setIsbn(updatedBook.getIsbn());
+                    book.setTitle(updatedBook.getTitle());
+                    book.setAuthor(updatedBook.getAuthor());
+                    book.setCategory(updatedBook.getCategory());
+                    book.setQuantity(updatedBook.getQuantity());
+                    book.setDescription(updatedBook.getDescription());
+                    book.setImage(updatedBook.getImage());
+                    book.setPublisher(updatedBook.getPublisher());
+                    Book updated = bookRepository.save(book);
+                    return ResponseEntity.status(HttpStatus.OK).body(updated);
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         if (bookRepository.existsById(id)) {
             bookRepository.deleteById(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

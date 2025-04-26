@@ -3,7 +3,7 @@ package com.bookshop.bookshopapi.controller;
 import com.bookshop.bookshopapi.DTO.BookRequest;
 import com.bookshop.bookshopapi.entity.Book;
 import com.bookshop.bookshopapi.repository.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,14 +12,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin")
+@AllArgsConstructor
 public class AdminController {
 
     private final BookRepository bookRepository;
-
-    @Autowired
-    public AdminController(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
 
     @PostMapping
     public ResponseEntity<Book> createBook(@RequestBody BookRequest book) {
@@ -34,6 +30,7 @@ public class AdminController {
         savedBook.setPublisher(book.getPublisher());
         savedBook.setPrice(book.getPrice());
         bookRepository.save(savedBook);
+        System.out.println("Saved book ID: " + savedBook.getId());
         URI location = URI.create("/books/" + savedBook.getId());
         return ResponseEntity.created(location).body(savedBook);
     }

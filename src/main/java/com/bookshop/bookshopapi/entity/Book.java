@@ -10,8 +10,8 @@ import lombok.*;
 @NoArgsConstructor
 public class Book {
     @Id
-    @Column(name = "id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     @Column(name = "isbn", unique = true, nullable = false)

@@ -10,7 +10,7 @@ public class BookRequest {
     private String category;
     private Integer quantity;
     private String description;
-    private Double publisher;
+    private String publisher;
     private Double price;
     private byte[] image;
 }

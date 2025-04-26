@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.Optional;
 
 @RestController
@@ -32,8 +33,9 @@ public class AdminController {
         savedBook.setImage(book.getImage());
         savedBook.setPublisher(book.getPublisher());
         savedBook.setPrice(book.getPrice());
-        savedBook = bookRepository.save(savedBook);
-        return ResponseEntity.ok(savedBook);
+        bookRepository.save(savedBook);
+        URI location = URI.create("/books/" + savedBook.getId());
+        return ResponseEntity.created(location).body(savedBook);
     }
 
     @PutMapping("/{id}")
@@ -54,7 +56,8 @@ public class AdminController {
             existingBook.setPrice(updatedBook.getPrice());
 
             Book savedBook = bookRepository.save(existingBook);
-            return ResponseEntity.ok(savedBook);
+            URI location = URI.create("/books/" + savedBook.getId());
+            return ResponseEntity.created(location).body(savedBook);
         } else {
             return ResponseEntity.notFound().build();
         }

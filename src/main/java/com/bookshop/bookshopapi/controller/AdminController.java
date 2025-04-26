@@ -55,8 +55,8 @@ public class AdminController {
 
     @DeleteMapping("delete/{isbn}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long isbn) {
-        if (bookRepository.existsById(isbn)) {
-            bookRepository.deleteById(isbn);
+        if (bookRepository.existsByIsbn(isbn)) {
+            bookRepository.deleteByIsbn(isbn);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

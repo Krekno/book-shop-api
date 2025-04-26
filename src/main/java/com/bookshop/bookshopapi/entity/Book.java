@@ -36,7 +36,7 @@ public class Book {
     private byte[] image;
 
     @Column(name = "publisher", nullable = false)
-    private Double publisher;
+    private String publisher;
 
     @Column(name = "price", nullable = false)
     private Double price;

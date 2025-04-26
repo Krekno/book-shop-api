@@ -4,10 +4,10 @@ import com.bookshop.bookshopapi.DTO.BookRequest;
 import com.bookshop.bookshopapi.entity.Book;
 import com.bookshop.bookshopapi.repository.BookRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.Optional;
 
 @RestController
@@ -31,8 +31,10 @@ public class AdminController {
         savedBook.setPrice(book.getPrice());
         bookRepository.save(savedBook);
         System.out.println("Saved book ID: " + savedBook.getId());
-        URI location = URI.create("/books/" + savedBook.getId());
-        return ResponseEntity.created(location).body(savedBook);
+        if (savedBook.getId() != null)
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @PutMapping("update/{id}")
@@ -52,11 +54,9 @@ public class AdminController {
             existingBook.setPublisher(updatedBook.getPublisher());
             existingBook.setPrice(updatedBook.getPrice());
 
-            Book savedBook = bookRepository.save(existingBook);
-            URI location = URI.create("/books/" + savedBook.getId());
-            return ResponseEntity.created(location).body(savedBook);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
@@ -64,9 +64,9 @@ public class AdminController {
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         if (bookRepository.existsById(id)) {
             bookRepository.deleteById(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.status(HttpStatus.OK).build();
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }

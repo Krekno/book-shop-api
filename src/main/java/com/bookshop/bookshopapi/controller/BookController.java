@@ -37,7 +37,7 @@ public class BookController {
         return ResponseEntity.ok(bookRepository.findAll(paging));
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable Long id) {
         return bookRepository.findById(id)
                 .map(ResponseEntity::ok)

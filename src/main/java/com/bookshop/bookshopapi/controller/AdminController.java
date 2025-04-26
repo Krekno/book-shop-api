@@ -3,6 +3,7 @@ package com.bookshop.bookshopapi.controller;
 import com.bookshop.bookshopapi.DTO.BookRequest;
 import com.bookshop.bookshopapi.entity.Book;
 import com.bookshop.bookshopapi.repository.BookRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +54,7 @@ public class AdminController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    @Transactional
     @DeleteMapping("delete/{isbn}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long isbn) {
         if (bookRepository.existsByIsbn(isbn)) {

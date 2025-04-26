@@ -21,7 +21,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/cart/**").hasRole("CUSTOMER")
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/product").permitAll()
+                        .requestMatchers("/book").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(Customizer.withDefaults());

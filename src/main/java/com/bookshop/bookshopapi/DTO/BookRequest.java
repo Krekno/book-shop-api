@@ -12,5 +12,5 @@ public class BookRequest {
     private String description;
     private String publisher;
     private Double price;
-    private byte[] image;
+    private String image;
 }

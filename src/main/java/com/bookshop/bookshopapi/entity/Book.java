@@ -33,7 +33,7 @@ public class Book {
     private String description;
 
     @Column(name = "image", nullable = false)
-    private byte[] image;
+    private String image;
 
     @Column(name = "publisher", nullable = false)
     private String publisher;
